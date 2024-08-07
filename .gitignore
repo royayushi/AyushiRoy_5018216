@@ -1,3 +1,26 @@
 CDN - WEEK 1\.settings
 CDN - WEEK 1\.classpath
 CDN - WEEK 1\.project
+
+# Week 2
+
+# Build and Dependency Files
+target/
+Maven\ Dependencies/
+JRE\ System\ Library\ \[JavaSE-17\]/
+mvnw
+mvnw.cmd
+
+# IDE-Specific Files
+.classpath
+.project
+.settings/
+
+# Generated Files
+# (except applicationContext.xml)
+
+# Log Files
+*.log
+
+# Temporary Files
+HELP.md
