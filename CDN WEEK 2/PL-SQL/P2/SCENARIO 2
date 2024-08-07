@@ -1,0 +1,25 @@
+CREATE OR REPLACE PROCEDURE UpdateSalary (
+    p_EmployeeID IN Employees.EmployeeID%TYPE,
+    p_Percentage IN NUMBER
+) AS
+    v_Salary Employees.Salary%TYPE;
+BEGIN
+    -- Check if the employee exists
+    SELECT Salary INTO v_Salary FROM Employees WHERE EmployeeID = p_EmployeeID;
+
+    -- Update the salary
+    UPDATE Employees SET Salary = Salary * (1 + p_Percentage / 100) WHERE EmployeeID = p_EmployeeID;
+
+    COMMIT;
+EXCEPTION
+    WHEN NO_DATA_FOUND THEN
+        -- Log the error for non-existent employee ID
+        INSERT INTO ErrorLog (LogID, LogMessage, LogDate) 
+        VALUES (seq_errorlog.NEXTVAL, 'Employee ID ' || p_EmployeeID || ' does not exist.', SYSDATE);
+    WHEN OTHERS THEN
+        -- Log any other errors
+        INSERT INTO ErrorLog (LogID, LogMessage, LogDate) 
+        VALUES (seq_errorlog.NEXTVAL, SQLERRM, SYSDATE);
+        ROLLBACK;
+        RAISE;
+END UpdateSalary;

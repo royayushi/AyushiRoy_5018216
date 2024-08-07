@@ -1,0 +1,17 @@
+CREATE OR REPLACE PROCEDURE UpdateEmployeeBonus (
+    p_Department IN Employees.Department%TYPE,
+    p_BonusPercentage IN NUMBER
+) AS
+BEGIN
+    UPDATE Employees
+    SET Salary = Salary * (1 + p_BonusPercentage / 100)
+    WHERE Department = p_Department;
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        INSERT INTO ErrorLog (LogID, LogMessage, LogDate)
+        VALUES (seq_errorlog.NEXTVAL, SQLERRM, SYSDATE);
+        ROLLBACK;
+        RAISE;
+END UpdateEmployeeBonus;

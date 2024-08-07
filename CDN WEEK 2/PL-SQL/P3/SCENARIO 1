@@ -1,0 +1,15 @@
+CREATE OR REPLACE PROCEDURE ProcessMonthlyInterest AS
+BEGIN
+    UPDATE Accounts
+    SET Balance = Balance * 1.01,
+        LastModified = SYSDATE
+    WHERE AccountType = 'Savings';
+    
+    COMMIT;
+EXCEPTION
+    WHEN OTHERS THEN
+        INSERT INTO ErrorLog (LogID, LogMessage, LogDate)
+        VALUES (seq_errorlog.NEXTVAL, SQLERRM, SYSDATE);
+        ROLLBACK;
+        RAISE;
+END ProcessMonthlyInterest;
