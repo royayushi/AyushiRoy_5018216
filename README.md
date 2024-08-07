@@ -30,3 +30,10 @@
 
 ```
 _P1, P2... indicates Problem no 1, Problem no 2 and so on._
+
+> WEEK 2
+
+- Spring files are under Folder named: SPRING.
+- Under SPRING folder, each exercise folders are named as LibraryManagement1 , LibraryManagement2 etc, where 1, 2 indicates the exercise number.
+- Under each exercise folder, eg, under LibraryManagement1 folder, java files are under ```src/main/java``` and 'applicationContext.xml' file is under ```src/main/resources``` 
+
