@@ -1,0 +1,25 @@
+DECLARE
+    CURSOR cur_Loans IS
+        SELECT LoanID, InterestRate
+        FROM Loans;
+    
+    v_LoanID Loans.LoanID%TYPE;
+    v_InterestRate Loans.InterestRate%TYPE;
+    v_NewInterestRate NUMBER;
+BEGIN
+    OPEN cur_Loans;
+    LOOP
+        FETCH cur_Loans INTO v_LoanID, v_InterestRate;
+        EXIT WHEN cur_Loans%NOTFOUND;
+        
+        -- Determine new interest rate based on some policy
+        v_NewInterestRate := v_InterestRate + 1; -- Example: increase all interest rates by 1%
+        
+        UPDATE Loans
+        SET InterestRate = v_NewInterestRate
+        WHERE LoanID = v_LoanID;
+    END LOOP;
+    CLOSE cur_Loans;
+    
+    COMMIT;
+END;

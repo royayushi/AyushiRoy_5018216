@@ -1,0 +1,27 @@
+DECLARE
+    CURSOR cur_Accounts IS
+        SELECT AccountID, Balance
+        FROM Accounts;
+    
+    v_AccountID Accounts.AccountID%TYPE;
+    v_Balance Accounts.Balance%TYPE;
+    v_AnnualFee CONSTANT NUMBER := 100; -- Annual maintenance fee
+BEGIN
+    OPEN cur_Accounts;
+    LOOP
+        FETCH cur_Accounts INTO v_AccountID, v_Balance;
+        EXIT WHEN cur_Accounts%NOTFOUND;
+        
+        IF v_Balance >= v_AnnualFee THEN
+            UPDATE Accounts
+            SET Balance = Balance - v_AnnualFee,
+                LastModified = SYSDATE
+            WHERE AccountID = v_AccountID;
+        ELSE
+            DBMS_OUTPUT.PUT_LINE('Account ID ' || v_AccountID || ' does not have sufficient funds for the annual fee.');
+        END IF;
+    END LOOP;
+    CLOSE cur_Accounts;
+    
+    COMMIT;
+END;

@@ -1,0 +1,19 @@
+DECLARE
+    CURSOR c_customers IS
+        SELECT CustomerID, ROUND((SYSDATE - DOB) / 365) AS Age
+        FROM Customers;
+    v_CustomerID Customers.CustomerID%TYPE;
+    v_Age NUMBER;
+BEGIN
+    FOR r_customer IN c_customers LOOP
+        v_CustomerID := r_customer.CustomerID;
+        v_Age := r_customer.Age;
+
+        IF v_Age > 60 THEN
+            UPDATE Loans
+            SET InterestRate = InterestRate - 1
+            WHERE CustomerID = v_CustomerID;
+        END IF;
+    END LOOP;
+    COMMIT;
+END;

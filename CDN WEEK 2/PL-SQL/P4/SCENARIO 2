@@ -1,0 +1,20 @@
+CREATE OR REPLACE FUNCTION CalculateMonthlyInstallment (
+    p_LoanAmount IN NUMBER,
+    p_InterestRate IN NUMBER,
+    p_LoanDuration IN NUMBER
+) RETURN NUMBER IS
+    v_MonthlyInterestRate NUMBER;
+    v_NumberOfPayments NUMBER;
+    v_MonthlyInstallment NUMBER;
+BEGIN
+    v_MonthlyInterestRate := p_InterestRate / 100 / 12;
+    v_NumberOfPayments := p_LoanDuration * 12;
+    
+    IF v_MonthlyInterestRate = 0 THEN
+        v_MonthlyInstallment := p_LoanAmount / v_NumberOfPayments;
+    ELSE
+        v_MonthlyInstallment := p_LoanAmount * v_MonthlyInterestRate / (1 - POWER(1 + v_MonthlyInterestRate, -v_NumberOfPayments));
+    END IF;
+    
+    RETURN v_MonthlyInstallment;
+END CalculateMonthlyInstallment;

@@ -1,0 +1,9 @@
+-- AddING a simple log table to log errors
+CREATE TABLE ErrorLog (
+    LogID NUMBER PRIMARY KEY,
+    LogMessage VARCHAR2(4000),
+    LogDate DATE
+);
+
+-- Trigger to populate ErrorLog primary key
+CREATE SEQUENCE seq_errorlog;
